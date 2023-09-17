@@ -4,7 +4,7 @@ using System.IO;
 using System.Collections.Specialized;
 using System.Globalization;
 
-namespace SPXDataFetcher
+namespace SP500DataFetcher
 {
     class DataFetcher
     {
@@ -13,10 +13,13 @@ namespace SPXDataFetcher
             List<string> companiesSymbols = new List<string>();
             DateTime dateTimeNow = DateTime.Now, dateTimePast20years = DateTime.Now.AddYears(-20);
 
+            // Download S&P500 companies symbols
             using (WebClient client = new WebClient())
             {
                 string url = "https://datahub.io/core/s-and-p-500-companies/r/constituents.csv";
                 string[] data = client.DownloadString(url).Split('\n');
+
+                // Extract the symbols from the data and put them into a list
                 for (int i = 1; i < data.Length; ++i)
                 {
                     string[] lineData = data[i].Split(',');
@@ -24,7 +27,8 @@ namespace SPXDataFetcher
                 }
             }
 
-            for (int i = 0; i < companiesSymbols.Count; i++) // TODO: Download conventions for SPX companies, extract the symbols, and put them into a list
+            // Download S&P500 companies historical data
+            for (int i = 0; i < companiesSymbols.Count; i++) // TODO: Download conventions for S&P500 companies, extract the symbols, and put them into a list
             {
                 using (WebClient client = new WebClient())
                 {
